@@ -34,6 +34,18 @@ python3 PLOT_GRAPH_PROJ.py a.csv b.csv
 - 출력 ±100 % 클램프, softPwm에 반올림한 정수로 전달
 - 모터 모델 시뮬레이션(목표 10 rev, T = 5 s)에서 anti-windup 유무 비교: P30 I50 오버슈트 71 % → 9 %, P100 I200 D2 오버슈트 79 % → 1.5 % (실제 모터에서 재확인 필요)
 
+### 응답 평가 (`EVALUATOR.py`)
+
+- 현재는 **배포 원본 그대로** (점수 = 평균 |r − y|). 기본 버전으로 먼저 돌려본 뒤 교체 예정.
+- 교체용 버전: `tools/EVALUATOR_v2.py` → 적용할 때 루트의 `EVALUATOR.py`로 복사
+  - 비용 `J = ITAE/|r| + 오버슈트[%]/100`, ITAE = ∫₀ᵀ t·|r − y| dt (A_k와 같은 t 가중, 0초부터 적분, |r|로 정규화)
+  - `metrics()`: 상승시간, 오버슈트, 피크 시각, 정착시간, 정상상태 오차, 진동 횟수, 이동·도달 여부
+  - 여러 CSV 비교표: `python3 EVALUATOR.py a.csv b.csv ...`
+
+### 시뮬레이터 (`tools/sim/`)
+
+`AUTO_CONTROL_PROJ.c`를 수정 없이 PC에서 돌려 같은 형식의 CSV를 만든다. 모터 없이 평가 함수와 튜너를 검증하는 용도. 자세한 내용은 [tools/sim/README.md](tools/sim/README.md).
+
 ## 조건
 
 - 제어 주기 10 ms, 1회 실행 ≤ 10 s (A_k 평가는 5 ≤ T ≤ 10)

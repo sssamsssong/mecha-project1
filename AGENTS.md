@@ -39,5 +39,7 @@
 
 - 구현 현황과 설계 근거는 `README.md`에 있다. 바꾼 내용은 README에도 반영한다.
 - 남길 실험 결과(CSV/HTML/PNG)는 `results/` 아래에 둔다. 작업 폴더의 CSV/HTML은 git에 안 올라간다.
-- CSV는 앞 몇 줄과 지표만 읽는다. 전체를 출력하지 않는다.
+- CSV는 앞 몇 줄과 지표만 읽는다. 전체를 출력하지 않는다. 점수는 `python3 EVALUATOR.py a.csv`, `python3 PROJECT_SCORE.py a.csv`로 본다.
+- `EVALUATOR.py`는 지금 배포 원본이다. 사용자가 요청하기 전에는 `tools/EVALUATOR_v2.py`로 바꾸지 않는다.
+- 모터 없이 확인할 때는 `tools/sim`의 시뮬레이터(`AUTO_CONTROL_PROJ_SIM`)를 쓴다. 시뮬레이터 결과로 게인 값을 정하지 않는다.
 - 위 규칙과 충돌하는 요청을 받으면 수정하기 전에 어떤 규칙에 걸리는지 먼저 말한다.
