@@ -122,16 +122,54 @@ void funcEncoderB()     // Interrupt: edge on encoder B
 /* ********************************** */
 /* ****** REWRITE THIS SECTION ****** */
 /* ********************************** */
+/* Discrete PID position controller (called every LOOPTIME)
+ *   u = Kp*e + Ki*integral(e dt) + Kd*D
+ *   - D on measurement: D = -dy/dt (same as de/dt for a constant target,
+ *     but no spike ("derivative kick") at the step at t = 0)
+ *   - D is low-pass filtered: encoder steps of 1/216 rev make dy/dt jumpy
+ *   - Anti-windup: stop integrating while the output is saturated in the
+ *     same direction as the error, and limit |Ki*integral| to PWM_MAX
+ *   - Output limited to +-PWM_MAX [% duty], rounded to int for softPwm
+ */
+#define PWM_MAX 100.0f          // softPwm range (softPwmCreate(..., 0, 100))
+#define D_FILTER_ALPHA 0.3f     // 1st-order LPF weight of new sample (tau = dt*(1-a)/a = 23 ms)
+
 void positionControl(float error)   // Position controller for motor PWM
 {
-    controlInput = pGain * error;   // P control ONLY
+    static float integral = 0;      // Integral of error [rev*s]
+    static float prevPosition = 0;  // Position at last call [rev] (start position is 0)
+    static float dFiltered = 0;     // Filtered -dy/dt [rev/s]
+
+    const float dt = LOOPTIME / 1000.0f;    // Control period [s]
+    float position = redGearPosition;       // Read once (updated by encoder interrupts)
+
+    // Derivative on measurement + low-pass filter
+    float dRaw = -(position - prevPosition) / dt;
+    dFiltered = D_FILTER_ALPHA * dRaw + (1.0f - D_FILTER_ALPHA) * dFiltered;
+    prevPosition = position;
+
+    // Output with the current integral (to check saturation first)
+    float uTry = pGain * error + iGain * integral + dGain * dFiltered;
+    int saturated = (uTry >= PWM_MAX && error > 0) || (uTry <= -PWM_MAX && error < 0);
+
+    // Anti-windup (conditional integration + clamp)
+    if (!saturated) integral += error * dt;
+    if (iGain != 0) {
+        float iMax = PWM_MAX / (iGain > 0 ? iGain : -iGain);    // |Ki * integral| <= PWM_MAX
+        if (integral > iMax) integral = iMax;
+        if (integral < -iMax) integral = -iMax;
+    }
+
+    controlInput = pGain * error + iGain * integral + dGain * dFiltered;
+    if (controlInput > PWM_MAX) controlInput = PWM_MAX;
+    if (controlInput < -PWM_MAX) controlInput = -PWM_MAX;
 
     if (controlInput > 0) {         // Direction by sign (+: MOTOR1, -: MOTOR2)
-        softPwmWrite(MOTOR1, controlInput);
+        softPwmWrite(MOTOR1, (int)(controlInput + 0.5f));   // Round, not truncate
         softPwmWrite(MOTOR2, 0);
     }
     else {
-        softPwmWrite(MOTOR2, -controlInput);
+        softPwmWrite(MOTOR2, (int)(-controlInput + 0.5f));
         softPwmWrite(MOTOR1, 0);
     }
 }

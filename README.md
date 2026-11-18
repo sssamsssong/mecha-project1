@@ -24,6 +24,16 @@ python3 AUTO_TUNE_PROJ.py
 python3 PLOT_GRAPH_PROJ.py a.csv b.csv
 ```
 
+## 구현 현황
+
+### PID 제어기 (`positionControl()`)
+
+- 이산 PID: `u = Kp·e + Ki·∫e dt + Kd·D`, dt = 0.01 s
+- D는 측정값 미분 `-dy/dt` → step 순간 derivative kick 없음, 1차 저역통과 필터(α = 0.3, τ ≈ 23 ms)로 엔코더 양자화 잡음 완화
+- Anti-windup: 출력이 오차 방향으로 포화되면 적분 정지 + |Ki·적분| ≤ 100으로 제한
+- 출력 ±100 % 클램프, softPwm에 반올림한 정수로 전달
+- 모터 모델 시뮬레이션(목표 10 rev, T = 5 s)에서 anti-windup 유무 비교: P30 I50 오버슈트 71 % → 9 %, P100 I200 D2 오버슈트 79 % → 1.5 % (실제 모터에서 재확인 필요)
+
 ## 조건
 
 - 제어 주기 10 ms, 1회 실행 ≤ 10 s (A_k 평가는 5 ≤ T ≤ 10)
