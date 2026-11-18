@@ -1,0 +1,23 @@
+# Build output (Raspberry Pi)
+AUTO_CONTROL_PROJ
+*.o
+*.out
+
+# Run outputs in the working folder (move the ones to keep into results/)
+/*.csv
+/*.html
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Secrets (team API token etc.)
+.env
+*.token
+secrets*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
