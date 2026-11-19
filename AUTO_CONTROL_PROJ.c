@@ -122,16 +122,53 @@ void funcEncoderB()     // Interrupt: edge on encoder B
 /* ********************************** */
 /* ****** REWRITE THIS SECTION ****** */
 /* ********************************** */
+#define PID_DT (LOOPTIME / 1000.0f)  // Fixed 10 ms control period, in seconds
+#define PID_PWM_MAX 100.0f          // softPwmCreate uses a 0-100 duty range
+#define PID_D_ALPHA 0.2f            // Smooth encoder steps over several samples
+
 void positionControl(float error)   // Position controller for motor PWM
 {
-    controlInput = pGain * error;   // P control ONLY
+    static float integral = 0.0f;   // I term in PWM units
+    static float previousPosition = 0.0f;
+    static float filteredVelocity = 0.0f;
+    static int initialized = 0;
+    float position = redGearPosition;
+    float velocity;
+    float derivative;
+    float increment;
+    float candidate;
+    float limited;
+    int pwm;
 
-    if (controlInput > 0) {         // Direction by sign (+: MOTOR1, -: MOTOR2)
-        softPwmWrite(MOTOR1, controlInput);
+    if (!initialized) {
+        previousPosition = position; // No derivative kick at startup
+        initialized = 1;
+    }
+    velocity = (position - previousPosition) / PID_DT;
+    previousPosition = position;
+    filteredVelocity += PID_D_ALPHA * (velocity - filteredVelocity);
+    derivative = -dGain * filteredVelocity;  // Differentiate position, not target
+
+    increment = iGain * error * PID_DT;
+    candidate = pGain * error + integral + increment + derivative;
+    // Do not integrate further into saturation; allow unwinding.
+    if (!((candidate > PID_PWM_MAX && increment > 0.0f) ||
+          (candidate < -PID_PWM_MAX && increment < 0.0f))) {
+        integral += increment;
+    }
+    controlInput = pGain * error + integral + derivative;
+    limited = controlInput;
+    if (limited > PID_PWM_MAX) limited = PID_PWM_MAX;
+    if (limited < -PID_PWM_MAX) limited = -PID_PWM_MAX;
+
+    if (limited > 0) {              // Direction by sign (+: MOTOR1, -: MOTOR2)
+        pwm = (int)limited;         // Match original P control: truncate
+        softPwmWrite(MOTOR1, pwm);
         softPwmWrite(MOTOR2, 0);
     }
     else {
-        softPwmWrite(MOTOR2, -controlInput);
+        pwm = (int)(-limited);
+        softPwmWrite(MOTOR2, pwm);
         softPwmWrite(MOTOR1, 0);
     }
 }
