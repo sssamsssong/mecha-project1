@@ -3,14 +3,6 @@ AUTO_CONTROL_PROJ
 *.o
 *.out
 
-# Simulator build (tools/sim)
-AUTO_CONTROL_PROJ_SIM
-AUTO_CONTROL_PROJ_SIM.exe
-build/
-*.obj
-*.pdb
-*.ilk
-
 # Run outputs in the working folder (move the ones to keep into results/)
 /*.csv
 /*.html

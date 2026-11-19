@@ -26,25 +26,18 @@ python3 PLOT_GRAPH_PROJ.py a.csv b.csv
 
 ## 구현 현황
 
-### PID 제어기 (`positionControl()`)
+모든 코드는 **배포 원본 상태**에서 Pi의 AI(opencode)로 하나씩 구현한다.
 
-- 이산 PID: `u = Kp·e + Ki·∫e dt + Kd·D`, dt = 0.01 s
-- D는 측정값 미분 `-dy/dt` → step 순간 derivative kick 없음, 1차 저역통과 필터(α = 0.3, τ ≈ 23 ms)로 엔코더 양자화 잡음 완화
-- Anti-windup: 출력이 오차 방향으로 포화되면 적분 정지 + |Ki·적분| ≤ 100으로 제한
-- 출력 ±100 % 클램프, softPwm에 반올림한 정수로 전달
-- 모터 모델 시뮬레이션(목표 10 rev, T = 5 s)에서 anti-windup 유무 비교: P30 I50 오버슈트 71 % → 9 %, P100 I200 D2 오버슈트 79 % → 1.5 % (실제 모터에서 재확인 필요)
+| 항목 | 상태 |
+|---|---|
+| PID 제어기 (`positionControl()`) | 원본 (P 제어만) |
+| 응답 평가 (`EVALUATOR.evaluate()`) | 원본 (평균 \|r − y\|) |
+| 자동 튜너 (`tune()`) | 원본 (예제) |
 
-### 응답 평가 (`EVALUATOR.py`)
+## Pi 준비
 
-- 현재는 **배포 원본 그대로** (점수 = 평균 |r − y|). 기본 버전으로 먼저 돌려본 뒤 교체 예정.
-- 교체용 버전: `tools/EVALUATOR_v2.py` → 적용할 때 루트의 `EVALUATOR.py`로 복사
-  - 비용 `J = ITAE/|r| + 오버슈트[%]/100`, ITAE = ∫₀ᵀ t·|r − y| dt (A_k와 같은 t 가중, 0초부터 적분, |r|로 정규화)
-  - `metrics()`: 상승시간, 오버슈트, 피크 시각, 정착시간, 정상상태 오차, 진동 횟수, 이동·도달 여부
-  - 여러 CSV 비교표: `python3 EVALUATOR.py a.csv b.csv ...`
-
-### 시뮬레이터 (`tools/sim/`)
-
-`AUTO_CONTROL_PROJ.c`를 수정 없이 PC에서 돌려 같은 형식의 CSV를 만든다. 모터 없이 평가 함수와 튜너를 검증하는 용도. 자세한 내용은 [tools/sim/README.md](tools/sim/README.md).
+- 엔코더 A/B 선(GPIO17, 27)에 3.3 V 풀업 저항 2개가 꽂혀 있어야 한다(실습 6 p.16). 없으면 encPos가 0에서 안 변하고 모터가 멈추지 않는다.
+- 실행은 터미널에서 `sudo`로 하고, 종료는 `Ctrl+C`로 한다. 모터가 안 멈추면 `pinctrl set 19 op dl; pinctrl set 26 op dl`.
 
 ## 조건
 
