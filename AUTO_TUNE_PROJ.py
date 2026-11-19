@@ -12,6 +12,9 @@
 import os
 import subprocess                   # Run a terminal command from Python
 import time
+import csv                          # Tuning history
+import math                         # Validate gains and responses
+import sys                          # Optional initial gains
 from pathlib import Path
 import EVALUATOR as ev              # Evaluation program (EVALUATOR.py)
 import PROJECT_SCORE as ps          # Project score program (PROJECT_SCORE module)
@@ -65,23 +68,141 @@ def test(reference, gains, max_time):
 
 def tune():
     """Find the best gains using test(reference, gains, max_time)."""
-    # Example: move P by step, turn back with a half step if worse
-    reference = 10      # Target position [rev] (same for all runs here)
-    max_time = 5        # Run time [s] (same for all runs here, can be changed for each test)
-    p = 10              # First P gain
-    step = 5            # First change of P gain
-    best_score = test(reference, [p, 0, 0], max_time)
+    reference = 10.0
+    max_time = 5
+    started = time.monotonic()
+    if len(sys.argv) == 1:
+        gains = [10.0, 0.0, 0.0]  # Original example's initial gains
+    elif len(sys.argv) == 4:
+        try:
+            gains = [float(value) for value in sys.argv[1:]]
+        except ValueError:
+            raise SystemExit('Usage: python3 AUTO_TUNE_PROJ.py [P I D]')
+    else:
+        raise SystemExit('Usage: python3 AUTO_TUNE_PROJ.py [P I D]')
+    if any(not math.isfinite(value) or value < 0 or value > 1e6 for value in gains):
+        raise SystemExit('Gains must be finite and in the safety range 0 to 1000000.')
 
-    for i in range(2):  # Number of tries
-        new_score = test(reference, [p + step, 0, 0], max_time)
+    # Starting position is zero: 100 / |error| makes the initial P output 100%.
+    if gains[0] == 0:
+        gains[0] = 100.0 / abs(reference)
+    best_gains = gains[:]
+    best_score = float('inf')
+    previous_score = None
+    previous_gains = None
+    previous_axis = None
+    previous_factor = None
+    step = 2.0
+    still_count = 0
+    reserve = 4.0  # Allowance for evaluation, printing and graph generation
+    run_allowance = max_time + 1.0
 
-        if new_score < best_score:      # Better: move there and keep going
-            p = p + step
-            best_score = new_score
-        else:                           # Worse: turn back with a smaller step
-            step = -step / 2
+    Path('results').mkdir(exist_ok=True)
+    history_path = Path('results') / ('tuning_' + time.strftime('%Y%m%d_%H%M%S') + '_' + str(os.getpid()) + '.csv')
+    print('Tuning history:', history_path, flush=True)
+    with history_path.open('x', newline='') as history:
+        writer = csv.writer(history)
+        writer.writerow(['run', 'P', 'I', 'D', 'score', 'A_k', 'rise_time',
+                         'overshoot_percent', 'settling_time', 'steady_state_error',
+                         'oscillations', 'moved', 'csv', 'next_P', 'next_I', 'next_D', 'reason'])
+        while time.monotonic() - started + run_allowance + reserve <= 60.0:
+            run_started = time.monotonic()
+            score = test(reference, gains, max_time)
+            run_allowance = max(run_allowance, time.monotonic() - run_started)
+            filename = csv_files[-1]
+            try:
+                t, position, target = ev.read_csv(filename)
+                metrics = ev.response_metrics(t, position, target)
+                a_k = ps.evaluate(t, position, target)
+                if not math.isfinite(score) or not math.isfinite(a_k) or len(t) < 2:
+                    raise ValueError('invalid score or response')
+                if any(not math.isfinite(float(value)) for values in (t, position, target) for value in values):
+                    raise ValueError('non-finite response')
+                if abs(float(t[-1]) - max_time) > 0.03:
+                    raise ValueError('incomplete response')
+                if max(abs(float(value)) for value in position) > 2.0 * abs(reference):
+                    raise ValueError('dangerous position excursion')
+            except (OSError, ValueError, IndexError) as exc:
+                print('Tuning stopped:', exc, flush=True)
+                writer.writerow([len(csv_files), *gains, score, '', '', '', '', '', '', '', filename, '', '', '', str(exc)])
+                history.flush()
+                raise SystemExit('Unsafe or invalid response; tuning stopped.')
 
-    return [p, 0, 0], best_score
+            if score < best_score:
+                best_score = score
+                best_gains = gains[:]
+
+            still_count = still_count + 1 if not metrics['moved'] else 0
+            next_gains = gains[:]
+            stop = False
+            if still_count >= 2:
+                reason = 'no movement twice; stop for safety'
+                stop = True
+            elif not metrics['moved']:
+                # Use the observed error for 100% P output and grow much faster than 2x.
+                error = abs(reference - float(position[-1]))
+                next_gains[0] = max(100.0 / max(error, 0.001), gains[0] * 8.0)
+                reason = 'no movement: boost P with 100/|error| and eightfold growth'
+                previous_axis = None
+            elif metrics['oscillations'] >= 4 or metrics['overshoot_percent'] >= 25:
+                next_gains[0] *= 0.5
+                next_gains[1] *= 0.5
+                reason = 'large oscillation or overshoot: reduce P and I'
+                previous_axis = None
+            elif previous_score is not None and score > previous_score and gains != best_gains:
+                next_gains = best_gains[:]
+                step = 1.0 + (step - 1.0) / 2.0
+                if previous_axis is not None and previous_gains == best_gains:
+                    if best_gains[previous_axis] == 0:
+                        next_gains[previous_axis] = gains[previous_axis] / step
+                        previous_factor = 1.0 / step
+                        reason = 'score worsened: return to best and reduce zero-origin step'
+                    else:
+                        factor = 1.0 / step if previous_factor > 1 else step
+                        next_gains[previous_axis] *= factor
+                        previous_factor = factor
+                        reason = 'score worsened: return to best and try opposite direction with smaller step'
+                else:
+                    previous_axis = None
+                    reason = 'score worsened: return to best measured gains'
+            else:
+                if previous_axis is not None and previous_score is not None and score < previous_score:
+                    axis, factor = previous_axis, previous_factor
+                    reason = 'score improved: continue previous direction'
+                elif metrics['overshoot_percent'] > 2.0 or metrics['oscillations'] >= 2:
+                    axis, factor = 2, step
+                    reason = 'overshoot or oscillation: increase D'
+                elif metrics['steady_state_error'] > 0.01 * abs(reference):
+                    axis, factor = (1 if metrics['settling_time'] is not None else 0), step
+                    reason = 'remaining error: increase I if settled, otherwise P'
+                else:
+                    axis, factor = 1, step
+                    reason = 'small overshoot: explore I for remaining error'
+                if next_gains[axis] == 0:
+                    # Derive a first nonzero gain from current P and response duration.
+                    next_gains[axis] = gains[0] / max_time if axis == 1 else gains[0] * max_time / 100.0
+                    reason += '; seed from current P and response duration'
+                else:
+                    next_gains[axis] *= factor
+                previous_axis, previous_factor = axis, factor
+
+            next_gains = [min(1e6, max(0.0, value)) for value in next_gains]
+            writer.writerow([len(csv_files), *gains, score, a_k, metrics['rise_time'],
+                             metrics['overshoot_percent'], metrics['settling_time'],
+                             metrics['steady_state_error'], metrics['oscillations'], metrics['moved'],
+                             filename, *next_gains, reason])
+            history.flush()
+            print('Next:', next_gains, '-', reason, flush=True)
+            if stop:
+                raise SystemExit('No movement twice; tuning stopped for safety.')
+            previous_score = score
+            previous_gains = gains[:]
+            gains = next_gains
+
+    if not math.isfinite(best_score):
+        raise SystemExit('No valid motor response; tuning stopped.')
+    print('Final gains:', best_gains, flush=True)
+    return best_gains, best_score
 
 
 # ===== Run tuning and show the result =====

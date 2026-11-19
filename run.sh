@@ -66,5 +66,9 @@ case "$last_line" in
         fi
         ;;
 esac
-[ "$interrupted" -eq 0 ] || exit 130
+if [ "$interrupted" -ne 0 ]; then
+    trap - INT
+    kill -s INT "$$"
+    exit 130
+fi
 exit "$status"
