@@ -84,8 +84,8 @@ run_one() {
 
 case "$stage" in
     1)
-        for p in 50 100 200; do
-            for d in 0 1 2 4; do
+        for p in 50 100 200 400; do
+            for d in 0 2 4 8; do
                 run_one "$p" 0 "$d" || exit "$?"
             done
         done
