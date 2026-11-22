@@ -1,0 +1,452 @@
+17: lo // GPIO17
+27: hi // GPIO27
++10878585us
+17: hi // GPIO17
++19253us
+27: lo // GPIO27
++13008us
+17: lo // GPIO17
++13027us
+27: hi // GPIO27
++13787us
+17: hi // GPIO17
++13356us
+27: lo // GPIO27
++8753us
+17: lo // GPIO17
++11808us
+27: hi // GPIO27
++10561us
+17: hi // GPIO17
++13167us
+27: lo // GPIO27
++12197us
+17: lo // GPIO17
++11367us
+27: hi // GPIO27
++12996us
+17: hi // GPIO17
++1272443us
+27: lo // GPIO27
++28037us
+17: lo // GPIO17
++18436us
+27: hi // GPIO27
++17184us
+17: hi // GPIO17
++13863us
+27: lo // GPIO27
++8250us
+17: lo // GPIO17
++10207us
+27: hi // GPIO27
++8598us
+17: hi // GPIO17
++10272us
+27: lo // GPIO27
++9807us
+17: lo // GPIO17
++8654us
+27: hi // GPIO27
++8758us
+17: hi // GPIO17
++10540us
+27: lo // GPIO27
++8074us
+17: lo // GPIO17
++8086us
+27: hi // GPIO27
++8923us
+17: hi // GPIO17
++8760us
+27: lo // GPIO27
++6201us
+17: lo // GPIO17
++8065us
+27: hi // GPIO27
++7183us
+17: hi // GPIO17
++8625us
+27: lo // GPIO27
++8278us
+17: lo // GPIO17
++7173us
+27: hi // GPIO27
++7252us
+17: hi // GPIO17
++8542us
+27: lo // GPIO27
++6628us
+17: lo // GPIO17
++6628us
+27: hi // GPIO27
++7178us
+17: hi // GPIO17
++7092us
+27: lo // GPIO27
++5253us
+17: lo // GPIO17
++6929us
+27: hi // GPIO27
++5976us
+17: hi // GPIO17
++7064us
+27: lo // GPIO27
++6832us
+17: lo // GPIO17
++5864us
+27: hi // GPIO27
++5964us
+17: hi // GPIO17
++6920us
+27: lo // GPIO27
++5374us
+17: lo // GPIO17
++5373us
+27: hi // GPIO27
++5963us
+17: hi // GPIO17
++5954us
+27: lo // GPIO27
++4410us
+17: lo // GPIO17
++5653us
+27: hi // GPIO27
++4656us
+17: hi // GPIO17
++5313us
+27: lo // GPIO27
++5039us
+17: lo // GPIO17
++4341us
+27: hi // GPIO27
++4466us
+17: hi // GPIO17
++5190us
+27: lo // GPIO27
++4092us
+17: lo // GPIO17
++4196us
+27: hi // GPIO27
++4750us
+17: hi // GPIO17
++4847us
+27: lo // GPIO27
++3663us
+17: lo // GPIO17
++4740us
+27: hi // GPIO27
++3994us
+17: hi // GPIO17
++4609us
+27: lo // GPIO27
++4438us
+17: lo // GPIO17
++3829us
+27: hi // GPIO27
++4001us
+17: hi // GPIO17
++4744us
+27: lo // GPIO27
++3773us
+17: lo // GPIO17
++3792us
+27: hi // GPIO27
++4206us
+17: hi // GPIO17
++4240us
+27: lo // GPIO27
++3220us
+17: lo // GPIO17
++4084us
+27: hi // GPIO27
++3380us
+17: hi // GPIO17
++3899us
+27: lo // GPIO27
++3787us
+17: lo // GPIO17
++3342us
+27: hi // GPIO27
++3543us
+17: hi // GPIO17
++4189us
+27: lo // GPIO27
++3393us
+17: lo // GPIO17
++3435us
+27: hi // GPIO27
++3906us
+17: hi // GPIO17
++4051us
+27: lo // GPIO27
++3121us
+17: lo // GPIO17
++4105us
+27: hi // GPIO27
++3449us
+17: hi // GPIO17
++4097us
+27: lo // GPIO27
++4098us
+17: lo // GPIO17
++3659us
+27: hi // GPIO27
++3903us
+17: hi // GPIO17
++4630us
+27: lo // GPIO27
++3699us
+17: lo // GPIO17
++3708us
+27: hi // GPIO27
++4136us
+17: hi // GPIO17
++4158us
+27: lo // GPIO27
++3162us
+17: lo // GPIO17
++4085us
+27: hi // GPIO27
++3430us
+17: hi // GPIO17
++3956us
+27: lo // GPIO27
++3899us
+17: lo // GPIO17
++3443us
+27: hi // GPIO27
++3649us
+17: hi // GPIO17
++4303us
+27: lo // GPIO27
++3490us
+17: lo // GPIO17
++3521us
+27: hi // GPIO27
++4018us
+17: hi // GPIO17
++4167us
+27: lo // GPIO27
++3223us
+17: lo // GPIO17
++4239us
+27: hi // GPIO27
++3624us
+17: hi // GPIO17
++4263us
+27: lo // GPIO27
++4234us
+17: lo // GPIO17
++3731us
+27: hi // GPIO27
++3902us
+17: hi // GPIO17
++4641us
+27: lo // GPIO27
++3694us
+17: lo // GPIO17
++3714us
+27: hi // GPIO27
++4252us
+17: hi // GPIO17
++4433us
+27: lo // GPIO27
++3454us
+17: lo // GPIO17
++4550us
+27: hi // GPIO27
++3956us
+17: hi // GPIO17
++4741us
+27: lo // GPIO27
++4974us
+17: lo // GPIO17
++4785us
+27: hi // GPIO27
++5611us
+17: hi // GPIO17
++8119us
+27: lo // GPIO27
++8776us
+17: lo // GPIO17
++2482565us
+27: hi // GPIO27
++45372us
+17: hi // GPIO17
++14490us
+27: lo // GPIO27
++8041us
+17: lo // GPIO17
++9888us
+27: hi // GPIO27
++8204us
+17: hi // GPIO17
++9588us
+27: lo // GPIO27
++8861us
+17: lo // GPIO17
++7796us
+27: hi // GPIO27
++8129us
+17: hi // GPIO17
++10781us
+27: lo // GPIO27
++9292us
+17: lo // GPIO17
++10796us
+27: hi // GPIO27
++13558us
+17: hi // GPIO17
++16441us
+27: lo // GPIO27
++12457us
+17: lo // GPIO17
++1000392us
+27: hi // GPIO27
++26176us
+17: hi // GPIO17
++17910us
+27: lo // GPIO27
++12767us
+17: lo // GPIO17
++9607us
+27: hi // GPIO27
++8849us
+17: hi // GPIO17
++10286us
+27: lo // GPIO27
++7958us
+17: lo // GPIO17
++8159us
+27: hi // GPIO27
++9085us
+17: hi // GPIO17
++9173us
+27: lo // GPIO27
++6654us
+17: lo // GPIO17
++8978us
+27: hi // GPIO27
++7813us
+17: hi // GPIO17
++9668us
+27: lo // GPIO27
++9295us
+17: lo // GPIO17
++8318us
+27: hi // GPIO27
++8507us
+17: hi // GPIO17
++10822us
+27: lo // GPIO27
++9179us
+17: lo // GPIO17
++10606us
+27: hi // GPIO27
++12407us
+17: hi // GPIO17
++12427us
+27: lo // GPIO27
++8580us
+17: lo // GPIO17
++12638us
+27: hi // GPIO27
++12551us
+17: hi // GPIO17
++18909us
+27: lo // GPIO27
++18549us
+17: lo // GPIO17
++18245us
+27: hi // GPIO27
++16682us
+17: hi // GPIO17
++23848us
+27: lo // GPIO27
++16861us
+17: lo // GPIO17
++16151us
+27: hi // GPIO27
++16544us
+17: hi // GPIO17
++16038us
+27: lo // GPIO27
++10052us
+17: lo // GPIO17
++13126us
+27: hi // GPIO27
++11294us
+17: hi // GPIO17
++13071us
+27: lo // GPIO27
++10879us
+17: lo // GPIO17
++8522us
+27: hi // GPIO27
++7943us
+17: hi // GPIO17
++8826us
+27: lo // GPIO27
++6643us
+17: lo // GPIO17
++6548us
+27: hi // GPIO27
++7388us
+17: hi // GPIO17
++7425us
+27: lo // GPIO27
++5329us
+17: lo // GPIO17
++6856us
+27: hi // GPIO27
++5669us
+17: hi // GPIO17
++6504us
+27: lo // GPIO27
++6131us
+17: lo // GPIO17
++5234us
+27: hi // GPIO27
++5290us
+17: hi // GPIO17
++6202us
+27: lo // GPIO27
++5013us
+17: lo // GPIO17
++5147us
+27: hi // GPIO27
++5893us
+17: hi // GPIO17
++6058us
+27: lo // GPIO27
++4630us
+17: lo // GPIO17
++6080us
+27: hi // GPIO27
++5259us
+17: hi // GPIO17
++6203us
+27: lo // GPIO27
++6099us
+17: lo // GPIO17
++5483us
+27: hi // GPIO27
++5854us
+17: hi // GPIO17
++7337us
+27: lo // GPIO27
++6148us
+17: lo // GPIO17
++6776us
+27: hi // GPIO27
++8195us
+17: hi // GPIO17
++9182us
+27: lo // GPIO27
++7196us
+17: lo // GPIO17
++11312us
+27: hi // GPIO27
++13496us
+17: hi // GPIO17
