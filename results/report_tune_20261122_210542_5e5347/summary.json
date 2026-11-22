@@ -1,0 +1,20 @@
+{
+  "initial_gains": [
+    "10",
+    "0",
+    "0"
+  ],
+  "final_gains": [
+    887.40168,
+    0.0,
+    0.600626014375145
+  ],
+  "tune_runs": 8,
+  "tune_elapsed_seconds": 51.75365678199887,
+  "tune_finished": "2026-11-22 21:06:33 KST",
+  "remeasurement_A_k": [
+    1.2927184000000003,
+    1.2951959000000004
+  ],
+  "remeasurement_mean_A_k": 1.2939571500000002
+}

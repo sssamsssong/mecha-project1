@@ -1,0 +1,27 @@
+Tuning history: results/tuning_20261122_202206_15924.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 100000.0 100000.0
+-> score = 5.27802, A_k = 52.78025
+
+Next: [0.0, 100000.0, 197199.99999999994] - overshoot or oscillation: increase D; axis=D, trial_factor=1.9720; rule4: first valid best; improvement_vs_previous=first; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 100000.0 197199.99999999994
+-> score = 10.28025, A_k = 102.80254
+
+Next: [0.0, 4687.555147707621, 4687.555147707621] - rule6: D increase failed; reduce I and D from best; factor=1/21.3331; rule4: score at least 3% worse than best; improvement_vs_previous=-94.77%; gap_vs_best=94.77%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 4687.555147707621 4687.555147707621
+-> score = 4.43146, A_k = 44.31456
+
+Next: [0.0, 1171.8887869269051, 18750.220590830482] - large oscillation or overshoot: reduce I, increase D at the same P; factor=4.0000; rule4: new best by at least 3%; improvement_vs_previous=56.89%; gap_vs_best=-16.04%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 1171.8887869269051 18750.220590830482
+-> score = 12.00000, A_k = 120.00000
+
+Next: [0.0, 1171.8887869269051, 18750.220590830482] - possible encoder glitch; retry once; improvement_vs_previous=-170.79%; gap_vs_best=170.79%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 1171.8887869269051 18750.220590830482
+-> score = 12.00000, A_k = 120.00000
+
+Next: [0.0, 1171.8887869269051, 18750.220590830482] - no movement twice; stop for safety; improvement_vs_previous=0.00%; gap_vs_best=170.79%
+Final gains: [0.0, 4687.555147707621, 4687.555147707621]
+===== Result =====
+Best gains  : [0.0, 4687.555147707621, 4687.555147707621]
+Best score  : 4.43146
+Motor runs  : 5
+Enter the HTML file name: HTML file created: TUNE_20261122_202237.html

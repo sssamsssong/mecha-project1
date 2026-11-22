@@ -1,0 +1,15 @@
+{"gains": [1600, 0, 2], "repetition": 1, "A_k": 1.357613755, "overshoot_percent": 1.1600000000000055, "moved": true, "csv": "runs/20261122_211610_P1600_I0_D2.csv"}
+{"gains": [1600, 0, 2], "repetition": 2, "A_k": 1.4464259, "overshoot_percent": 1.5300000000000091, "moved": true, "csv": "runs/20261122_211617_P1600_I0_D2.csv"}
+{"gains": [1600, 0, 2], "repetition": 3, "A_k": 1.2970145000000004, "overshoot_percent": 1.5700000000000047, "moved": true, "csv": "runs/20261122_211623_P1600_I0_D2.csv"}
+{"gains": [1600, 0, 4], "repetition": 1, "A_k": 1.3035945000000007, "overshoot_percent": 1.4799999999999924, "moved": true, "csv": "runs/20261122_211629_P1600_I0_D4.csv"}
+{"gains": [1600, 0, 4], "repetition": 2, "A_k": 1.8158926000000006, "overshoot_percent": 1.0599999999999943, "moved": true, "csv": "runs/20261122_211636_P1600_I0_D4.csv"}
+{"gains": [1600, 0, 4], "repetition": 3, "A_k": 1.8003670999999999, "overshoot_percent": 1.0599999999999943, "moved": true, "csv": "runs/20261122_211642_P1600_I0_D4.csv"}
+{"gains": [1600, 0, 8], "repetition": 1, "A_k": 1.2319436000000001, "overshoot_percent": 0.9300000000000086, "moved": true, "csv": "runs/20261122_211648_P1600_I0_D8.csv"}
+{"gains": [1600, 0, 8], "repetition": 2, "A_k": 1.2512879000000001, "overshoot_percent": 1.3400000000000079, "moved": true, "csv": "runs/20261122_211655_P1600_I0_D8.csv"}
+{"gains": [1600, 0, 8], "repetition": 3, "A_k": 2.0181025999999997, "overshoot_percent": 1.3400000000000079, "moved": true, "csv": "runs/20261122_211701_P1600_I0_D8.csv"}
+{"gains": [1600, 0, 16], "repetition": 1, "A_k": 1.2259187000000002, "overshoot_percent": 0.6000000000000005, "moved": true, "csv": "runs/20261122_211707_P1600_I0_D16.csv"}
+{"gains": [1600, 0, 16], "repetition": 2, "A_k": 1.2677502000000014, "overshoot_percent": 1.3000000000000123, "moved": true, "csv": "runs/20261122_211714_P1600_I0_D16.csv"}
+{"gains": [1600, 0, 16], "repetition": 3, "A_k": 1.7392770000000009, "overshoot_percent": 1.0199999999999987, "moved": true, "csv": "runs/20261122_211720_P1600_I0_D16.csv"}
+{"gains": [800, 0, 16], "repetition": 1, "A_k": 1.1912306000000006, "overshoot_percent": 0.41999999999999815, "moved": true, "csv": "runs/20261122_211726_P800_I0_D16.csv"}
+{"gains": [800, 0, 16], "repetition": 2, "A_k": 1.2675786000000084, "overshoot_percent": 0.28000000000001357, "moved": true, "csv": "runs/20261122_211733_P800_I0_D16.csv"}
+{"gains": [800, 0, 16], "repetition": 3, "A_k": 1.310030600000008, "overshoot_percent": 1.0599999999999943, "moved": true, "csv": "runs/20261122_211739_P800_I0_D16.csv"}

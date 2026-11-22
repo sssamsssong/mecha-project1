@@ -1,0 +1,39 @@
+Tuning history: results/tuning_20261122_210542_25299.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 0.87867, A_k = 8.78675
+
+Next: [103.62, 0.0, 0.0] - remaining error: increase I if settled, otherwise P; axis=P, trial_factor=10.3620; rule4: first valid best; improvement_vs_previous=first; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 0.0
+-> score = 0.18606, A_k = 1.86062
+
+Next: [103.62, 0.0, 5.181] - overshoot increased from previous response: increase D; axis=D, trial_factor=1.7500; rule4: new best by at least 3%; rule1: D zero-origin seed without multiplier; improvement_vs_previous=78.82%; gap_vs_best=-78.82%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 5.181
+-> score = 0.14644, A_k = 1.46440
+
+Next: [103.62, 0.0, 6.47625] - rule4: score improved at least 3% versus best; continue previous direction; axis=D, trial_factor=1.2500; rule4: new best by at least 3%; improvement_vs_previous=21.29%; gap_vs_best=-21.29%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 6.47625
+-> score = 0.18714, A_k = 1.87136
+
+Next: [103.62, 0.0, 0.600626014375145] - rule6: D increase failed; reduce I and D from best; factor=1/8.6260; rule4: score at least 3% worse than best; improvement_vs_previous=-27.79%; gap_vs_best=27.79%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 0.600626014375145
+-> score = 0.13955, A_k = 1.39553
+
+Next: [103.62, 0.0, 0.06962972575645085] - rule6: reduction improved; continue reducing; factor=1/8.6260; rule4: new best by at least 3%; improvement_vs_previous=25.43%; gap_vs_best=-4.70%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 0.06962972575645085
+-> score = 0.17294, A_k = 1.72936
+
+Next: [103.62, 0.0, 0.600626014375145] - rule4: failed trial; return to best gains; rule4: score at least 3% worse than best; improvement_vs_previous=-23.92%; gap_vs_best=23.92%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 103.62 0.0 0.600626014375145
+-> score = 0.17170, A_k = 1.71697
+
+Next: [887.40168, 0.0, 0.600626014375145] - rule4: equivalent to best; switch axis; rule5: best gains remeasured; mean score=0.15562; improvement_vs_previous=0.72%; gap_vs_best=23.03%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 887.40168 0.0 0.600626014375145
+-> score = 0.13326, A_k = 1.33257
+
+Next: [7599.707987520001, 0.0, 0.600626014375145] - rule4: score improved at least 3% versus best; continue previous direction; axis=P, trial_factor=8.5640; rule4: new best by at least 3%; improvement_vs_previous=22.39%; gap_vs_best=-14.37%
+Final gains: [887.40168, 0.0, 0.600626014375145]
+===== Result =====
+Best gains  : [887.40168, 0.0, 0.600626014375145]
+Best score  : 0.13326
+Motor runs  : 8
+Enter the HTML file name: HTML file created: TUNE_20261122_210632.html

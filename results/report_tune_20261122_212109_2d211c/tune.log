@@ -1,0 +1,22 @@
+Tuning history: results/tuning_20261122_212109_31141.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 0.0 0.0
+-> score = 12.01005, A_k = 120.10051
+
+Next: [10.0, 0.0, 0.0] - no movement: P short: boost P from initial error and response severity; improvement_vs_previous=first; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 12.00000, A_k = 120.00000
+
+Next: [320.0, 0.0, 0.0] - no movement: P short: boost P from initial error and response severity; improvement_vs_previous=0.08%; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 320.0 0.0 0.0
+Reference: 10.00 rev, Max time: 5.00 s, Encoder: 216, Gain: P 320, I 0, D 0
+CSV file created: 20261122_212122_P320_I0_D0.csv
+Motor guard: no movement twice consecutively; possible encoder fault
+
+Tuning stopped: None
+Warning: no valid moving response; returning initial gains (score unavailable).
+Final gains: [0.0, 0.0, 0.0]
+===== Result =====
+Best gains  : [0.0, 0.0, 0.0]
+Best score  : inf
+Motor runs  : 2
+Enter the HTML file name: HTML file created: TUNE_20261122_212127.html

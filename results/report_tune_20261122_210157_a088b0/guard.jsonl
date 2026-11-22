@@ -1,0 +1,2 @@
+{"args": ["./AUTO_CONTROL_PROJ", "10.0", "5", "216", "0.0", "0.0", "0.0"], "time": 1795348917.8026907, "csv": "20261122_210157_P0_I0_D0.csv", "min_position": 0.0, "max_position": 0.0, "moved": false, "ok": true, "reason": "initial zero-output response"}
+{"args": ["./AUTO_CONTROL_PROJ", "10.0", "5", "216", "10.0", "0.0", "0.0"], "time": 1795348924.114993, "csv": "20261122_210204_P10_I0_D0.csv", "min_position": -0.005, "max_position": 0.0, "moved": false, "ok": false, "reason": "no movement detected; possible encoder fault"}

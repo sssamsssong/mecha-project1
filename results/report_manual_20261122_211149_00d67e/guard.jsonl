@@ -1,0 +1,3 @@
+{"args": ["./AUTO_CONTROL_PROJ", "10", "5", "216", "600", "65", "12"], "time": 1795349509.5582612, "csv": "20261122_211149_P600_I65_D12.csv", "min_position": 0.0, "max_position": 10.042, "moved": true, "ok": true, "reason": "ok"}
+{"args": ["./AUTO_CONTROL_PROJ", "10", "5", "216", "600", "65", "12"], "time": 1795349515.883168, "csv": "20261122_211155_P600_I65_D12.csv", "min_position": 0.0, "max_position": 10.111, "moved": true, "ok": true, "reason": "ok"}
+{"args": ["./AUTO_CONTROL_PROJ", "10", "5", "216", "600", "65", "12"], "time": 1795349522.202964, "csv": "20261122_211202_P600_I65_D12.csv", "min_position": 0.0, "max_position": 10.079, "moved": true, "ok": true, "reason": "ok"}

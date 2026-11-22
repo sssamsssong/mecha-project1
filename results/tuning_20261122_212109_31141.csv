@@ -1,0 +1,4 @@
+run,elapsed_s,P,I,D,score,A_k,rise_time,overshoot_percent,settling_time,steady_state_error,oscillations,moved,csv,next_P,next_I,next_D,reason
+1,6.321869969000545,0.0,0.0,0.0,12.0100509,120.100509,,0.0,,10.009,0,False,20261122_212110_P0_I0_D0.csv,10.0,0.0,0.0,no movement: P short: boost P from initial error and response severity; improvement_vs_previous=first; gap_vs_best=first
+2,12.619330792000255,10.0,0.0,0.0,12.0,120.0,,0.0,,10.0,0,False,20261122_212116_P10_I0_D0.csv,320.0,0.0,0.0,no movement: P short: boost P from initial error and response severity; improvement_vs_previous=0.08%; gap_vs_best=first
+3,17.91477636899981,320.0,0.0,0.0,,,,,,,,,,,,,None

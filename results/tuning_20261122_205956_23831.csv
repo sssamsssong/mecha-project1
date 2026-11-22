@@ -1,0 +1,5 @@
+run,elapsed_s,P,I,D,score,A_k,rise_time,overshoot_percent,settling_time,steady_state_error,oscillations,moved,csv,next_P,next_I,next_D,reason
+1,6.323338783999134,0.0,0.0,0.0,12.04,120.39999999999999,,0.0,,10.0,0,False,20261122_205956_P0_I0_D0.csv,10.0,0.0,0.0,no movement: P short: boost P from initial error and response severity; improvement_vs_previous=first; gap_vs_best=first
+2,12.643027103998975,10.0,0.0,0.0,11.62920076,116.2920076,,0.0,,8.565117647058823,0,True,20261122_210003_P10_I0_D0.csv,275.5186470588235,0.0,0.0,"remaining error: increase I if settled, otherwise P; axis=P, trial_factor=27.5519; rule4: first valid best; improvement_vs_previous=3.41%; gap_vs_best=first"
+3,18.97670408600061,275.5186470588235,0.0,0.0,10.420626370000003,104.20626370000002,,0.0,,8.113647058823528,0,True,20261122_210009_P275.519_I0_D0.csv,7205.447934174392,0.0,0.0,"rule4: score improved at least 3% versus best; continue previous direction; axis=P, trial_factor=26.1523; rule4: new best by at least 3%; improvement_vs_previous=10.39%; gap_vs_best=-10.39%"
+4,24.266233360000115,7205.447934174392,0.0,0.0,,,,,,,,,,,,,None

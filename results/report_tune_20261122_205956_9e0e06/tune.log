@@ -1,0 +1,25 @@
+Tuning history: results/tuning_20261122_205956_23831.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 0.0 0.0
+-> score = 12.04000, A_k = 120.40000
+
+Next: [10.0, 0.0, 0.0] - no movement: P short: boost P from initial error and response severity; improvement_vs_previous=first; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 11.62920, A_k = 116.29201
+
+Next: [275.5186470588235, 0.0, 0.0] - remaining error: increase I if settled, otherwise P; axis=P, trial_factor=27.5519; rule4: first valid best; improvement_vs_previous=3.41%; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 275.5186470588235 0.0 0.0
+-> score = 10.42063, A_k = 104.20626
+
+Next: [7205.447934174392, 0.0, 0.0] - rule4: score improved at least 3% versus best; continue previous direction; axis=P, trial_factor=26.1523; rule4: new best by at least 3%; improvement_vs_previous=10.39%; gap_vs_best=-10.39%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 7205.447934174392 0.0 0.0
+Reference: 10.00 rev, Max time: 5.00 s, Encoder: 216, Gain: P 7205.45, I 0, D 0
+CSV file created: 20261122_210015_P7205.45_I0_D0.csv
+Motor guard: no movement detected; possible encoder fault
+
+Tuning stopped: None
+Final gains: [275.5186470588235, 0.0, 0.0]
+===== Result =====
+Best gains  : [275.5186470588235, 0.0, 0.0]
+Best score  : 10.42063
+Motor runs  : 3
+Enter the HTML file name: HTML file created: TUNE_20261122_210020.html

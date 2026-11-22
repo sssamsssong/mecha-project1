@@ -1,0 +1,158 @@
+[
+  {
+    "target": 10,
+    "seconds": 5,
+    "gains": [
+      600,
+      65,
+      12
+    ],
+    "mean_A_k": 1.188906100000004,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 10,
+    "seconds": 5,
+    "gains": [
+      800,
+      100,
+      8
+    ],
+    "mean_A_k": 1.2076321000000039,
+    "zero_error_count": 1,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 10,
+    "seconds": 5,
+    "gains": [
+      200,
+      100,
+      4
+    ],
+    "mean_A_k": 1.2832070500000026,
+    "zero_error_count": 1,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 10,
+    "seconds": 10,
+    "gains": [
+      600,
+      65,
+      12
+    ],
+    "mean_A_k": 0.0,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 10,
+    "seconds": 10,
+    "gains": [
+      800,
+      100,
+      8
+    ],
+    "mean_A_k": 0.0,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 10,
+    "seconds": 10,
+    "gains": [
+      200,
+      100,
+      4
+    ],
+    "mean_A_k": 0.13396520000000656,
+    "zero_error_count": 1,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": -3,
+    "seconds": 5,
+    "gains": [
+      600,
+      65,
+      12
+    ],
+    "mean_A_k": 0.07691554999999939,
+    "zero_error_count": 1,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": -3,
+    "seconds": 5,
+    "gains": [
+      800,
+      100,
+      8
+    ],
+    "mean_A_k": 0.18002254999999992,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": -3,
+    "seconds": 5,
+    "gains": [
+      200,
+      100,
+      4
+    ],
+    "mean_A_k": 0.1707535999999997,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 1,
+    "seconds": 5,
+    "gains": [
+      600,
+      65,
+      12
+    ],
+    "mean_A_k": 0.012400175000000008,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 1,
+    "seconds": 5,
+    "gains": [
+      800,
+      100,
+      8
+    ],
+    "mean_A_k": 0.048797999999999966,
+    "zero_error_count": 2,
+    "n": 2,
+    "unmoving": 0
+  },
+  {
+    "target": 1,
+    "seconds": 5,
+    "gains": [
+      200,
+      100,
+      4
+    ],
+    "mean_A_k": 0.1539677499999989,
+    "zero_error_count": 0,
+    "n": 2,
+    "unmoving": 0
+  }
+]

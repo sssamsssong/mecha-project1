@@ -1,0 +1,57 @@
+[
+  {
+    "gains": [
+      1600,
+      0,
+      2
+    ],
+    "mean_A_k": 1.3670180516666666,
+    "mean_overshoot_percent": 1.4200000000000064,
+    "n": 3,
+    "unmoving": 0
+  },
+  {
+    "gains": [
+      1600,
+      0,
+      4
+    ],
+    "mean_A_k": 1.6399514000000004,
+    "mean_overshoot_percent": 1.1999999999999937,
+    "n": 3,
+    "unmoving": 0
+  },
+  {
+    "gains": [
+      1600,
+      0,
+      8
+    ],
+    "mean_A_k": 1.5004447,
+    "mean_overshoot_percent": 1.2033333333333414,
+    "n": 3,
+    "unmoving": 0
+  },
+  {
+    "gains": [
+      1600,
+      0,
+      16
+    ],
+    "mean_A_k": 1.4109819666666674,
+    "mean_overshoot_percent": 0.9733333333333372,
+    "n": 3,
+    "unmoving": 0
+  },
+  {
+    "gains": [
+      800,
+      0,
+      16
+    ],
+    "mean_A_k": 1.256279933333339,
+    "mean_overshoot_percent": 0.5866666666666687,
+    "n": 3,
+    "unmoving": 0
+  }
+]
