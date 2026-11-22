@@ -1,0 +1,39 @@
+Tuning history: results/tuning_20261122_213126_34090.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 600.0 50.0 12.0
+-> score = 0.13406, A_k = 1.34061
+
+Next: [600.0, 62.5, 12.0] - small overshoot: explore I for remaining error; axis=I, trial_factor=1.2500; rule4: first valid best; improvement_vs_previous=first; gap_vs_best=first
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 600.0 62.5 12.0
+-> score = 0.13675, A_k = 1.36755
+
+Next: [5212.799999999999, 62.5, 12.0] - rule4: equivalent to best; switch axis; improvement_vs_previous=-2.01%; gap_vs_best=2.01%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 5212.799999999999 62.5 12.0
+-> score = 0.18443, A_k = 1.84430
+
+Next: [5212.799999999999, 62.5, 15.0] - rule2: P increase failed; try D increase at the same P and I; rule4: score at least 3% worse than best; improvement_vs_previous=-34.86%; gap_vs_best=37.57%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 5212.799999999999 62.5 15.0
+-> score = 0.17529, A_k = 1.75288
+
+Next: [600.0, 50.0, 12.0] - rule2: P plus D retry failed; return to best gains; rule4: score at least 3% worse than best; improvement_vs_previous=4.96%; gap_vs_best=30.75%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 600.0 50.0 12.0
+-> score = 0.12221, A_k = 1.22208
+
+Next: [600.0, 62.5, 12.0] - rule4: equivalent to best; switch axis; all axes blocked: allow blocked axes; rule5: best gains remeasured; mean score=0.12813; improvement_vs_previous=30.28%; gap_vs_best=-8.84%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 600.0 62.5 12.0
+-> score = 0.12579, A_k = 1.25788
+
+Next: [70.04550623054777, 62.5, 12.0] - rule4: equivalent to best; switch axis; rule3: failed-near alternative skipped; improvement_vs_previous=-2.93%; gap_vs_best=-1.83%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 70.04550623054777 62.5 12.0
+-> score = 0.32503, A_k = 3.25028
+
+Next: [600.0, 50.0, 12.0] - rule4: failed trial; return to best gains; rule4: score at least 3% worse than best; improvement_vs_previous=-158.39%; gap_vs_best=153.66%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 600.0 50.0 12.0
+-> score = 0.13335, A_k = 1.33349
+
+Next: [600.0, 50.0, 15.0] - rule4: equivalent to best; switch axis; rule5: best gains remeasured; mean score=0.12987; improvement_vs_previous=58.97%; gap_vs_best=4.07%
+Final gains: [600.0, 50.0, 12.0]
+===== Result =====
+Best gains  : [600.0, 50.0, 12.0]
+Best score  : 0.12987
+Motor runs  : 8
+Enter the HTML file name: HTML file created: TUNE_20261122_213216.html
