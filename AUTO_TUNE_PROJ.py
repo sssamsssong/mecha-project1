@@ -75,10 +75,62 @@ def _tuning_scaled_gain(gains, axis, factor, max_time, error):
         if axis == 0:
             value = p_scale
         elif axis == 1:
-            value = p_scale / max_time
+            return gains[0] / (2.0 * max_time)  # rule1: no response multiplier
         else:
-            value = p_scale * max_time / 100.0
+            return p_scale * max_time / 100.0  # rule1: existing D seed, unscaled
     return value * factor
+
+
+def _tuning_response_step(metrics, axis, reference, max_time, peak_progress):
+    """Choose a relative step from response severity: P up to 32, I/D up to 4."""
+    error_ratio = metrics['steady_state_error'] / abs(reference)
+    if axis == 0:
+        rise_time = metrics['rise_time']
+        if rise_time is None:
+            # No 90% arrival: use the observed shortfall, not a fabricated rise time.
+            rise_ratio = max(0.0, (0.9 - peak_progress) / 0.9)
+        else:
+            rise_ratio = rise_time / max_time
+        severity = max(error_ratio, rise_ratio)
+    elif axis == 1:
+        severity = error_ratio / 0.01
+    else:
+        severity = max(metrics['overshoot_percent'] / 25.0,
+                       metrics['oscillations'] / 4.0)
+    severity = min(1.0, max(0.0, severity))
+    multiplier = 31.0 if axis == 0 else 3.0
+    return max(1.25, 1.0 + multiplier * severity)
+
+
+def _tuning_near_failed(gains, failed_gains):
+    """rule3: all axes must be within 10% of one failed combination."""
+    return any(all((value == 0 if failed == 0 else
+                    value != 0 and 0.9 * failed <= value <= 1.1 * failed)
+                   for value, failed in zip(gains, trial))
+               for trial in failed_gains)
+
+
+def _tuning_unfailed_candidate(base_gains, blocked_axes, steps, failed_gains,
+                              metrics, max_time, error, allow_blocked=False):
+    """Explore one axis from a measured baseline, avoiding failed regions."""
+    preferred = 2 if metrics['overshoot_percent'] > 2.0 or metrics['oscillations'] >= 2 else (
+        1 if metrics['settling_time'] is not None else 0)
+    axes = [preferred] + [axis for axis in range(3) if axis != preferred]
+    axes = ([axis for axis in axes if axis not in blocked_axes]
+            + ([axis for axis in axes if axis in blocked_axes] if allow_blocked else []))
+    skipped = False
+    for axis in axes:
+        for direction in (1, -1):
+            factor = steps[axis] if direction > 0 else 1.0 / steps[axis]
+            candidate = base_gains[:]
+            candidate[axis] = _tuning_scaled_gain(base_gains, axis, factor, max_time, error)
+            candidate = [min(1e6, max(0.0, value)) for value in candidate]
+            if candidate != base_gains:
+                if _tuning_near_failed(candidate, failed_gains):
+                    skipped = True
+                else:
+                    return candidate, axis, factor, skipped
+    return None, None, None, skipped
 
 
 def tune():
@@ -95,19 +147,21 @@ def tune():
             raise SystemExit('Usage: python3 AUTO_TUNE_PROJ.py [P I D]')
     else:
         raise SystemExit('Usage: python3 AUTO_TUNE_PROJ.py [P I D]')
-    if any(not math.isfinite(value) or value < 0 or value > 1e6 for value in gains):
-        raise SystemExit('Gains must be finite and in the safety range 0 to 1000000.')
+    if any(not math.isfinite(value) or value < 0 for value in gains):
+        raise SystemExit('Gains must be finite and non-negative.')
 
     # The evaluator's initial gains, including all zeros, are measured unchanged.
     best_gains = gains[:]
     best_score = float('inf')
+    best_scores = []
+    failed_gains = []  # Only this tuning session, never past/manual experiments
     previous_score = None
     previous_overshoot = None
     previous_gains = None
     previous_axis = None
     previous_factor = None
-    step = 2.0
-    min_step = 1.25  # Minimum relative exploration, not a fixed gain increment
+    previous_retry = False
+    improvement_threshold = 0.03
     still_count = 0
     reserve = 4.0  # Allowance for evaluation, printing and graph generation
     run_allowance = max_time + 1.0
@@ -146,88 +200,167 @@ def tune():
             evaluated = time.monotonic()
             elapsed = evaluated - started
             run_allowance = max(run_allowance, evaluated - run_started)
-            if score < best_score:
+            # Compare against the best before updating it. At a zero best score,
+            # an equal score stays equivalent and any positive score is a failure.
+            first_trial = not math.isfinite(best_score)
+            repeat_best = not first_trial and gains == best_gains
+            best_gap = (None if first_trial else
+                        (score - best_score) / best_score if best_score > 0 else
+                        (0.0 if score == 0 else float('inf')))
+            improved = (first_trial or
+                        (not repeat_best and score < best_score
+                         and score <= best_score * (1.0 - improvement_threshold)))
+            failed_trial = (not first_trial and not repeat_best and score > best_score
+                            and score >= best_score * (1.0 + improvement_threshold))
+            equivalent = not improved and not failed_trial
+            if improved:
                 best_score = score
                 best_gains = gains[:]
-
+                best_scores = [score]
+            elif repeat_best:
+                best_scores.append(score)
+                best_score = sum(best_scores) / len(best_scores)
+            if failed_trial:
+                failed_gains.append(tuple(gains))
+            improvement = ((previous_score - score) / max(abs(previous_score), 1e-12)
+                           if previous_score is not None else None)
             # An intentionally unpowered first measurement is not a motor failure.
             unpowered_initial = previous_score is None and not any(gains)
             still_count = still_count + 1 if not metrics['moved'] and not unpowered_initial else 0
             error = abs(reference - float(position[-1]))
+            peak_progress = max(float(value) / reference for value in position)
+            steps = [_tuning_response_step(metrics, axis, reference, max_time, peak_progress)
+                     for axis in range(3)]
             next_gains = gains[:]
             stop = False
+            exhausted = False
+            next_axis = None
+            next_factor = None
+            next_retry = False
+            returning_best = False
+            seed_base = gains
+            blocked_axes = set()
+            skipped_failed = False
+            changed_axes = ({axis for axis in range(3)
+                             if previous_gains[axis] != gains[axis]}
+                            if previous_gains is not None else set())
             if still_count >= 2:
                 reason = 'no movement twice; stop for safety'
                 stop = True
+            elif failed_trial and previous_retry:
+                next_gains = best_gains[:]
+                returning_best = True
+                seed_base = best_gains
+                reason = 'rule2: P plus D retry failed; return to best gains'
+            elif (failed_trial and previous_gains is not None
+                  and gains[0] > previous_gains[0]):
+                next_gains[2] = _tuning_scaled_gain(gains, 2, steps[2], max_time, error)
+                next_axis, next_factor = 2, steps[2]
+                next_retry = True
+                reason = 'rule2: P increase failed; try D increase at the same P and I'
+                if min(1e6, next_gains[2]) <= gains[2]:
+                    next_gains = best_gains[:]
+                    returning_best = True
+                    seed_base = best_gains
+                    next_axis, next_factor, next_retry = None, None, False
+                    reason += '; D cannot increase within safety range: return to best'
+            elif failed_trial:
+                next_gains = best_gains[:]
+                returning_best = True
+                seed_base = best_gains
+                reason = 'rule4: failed trial; return to best gains'
+            elif equivalent:
+                blocked_axes = changed_axes
+                if previous_axis is not None:
+                    blocked_axes = blocked_axes | {previous_axis}
+                next_gains, next_axis, next_factor, skipped_failed = _tuning_unfailed_candidate(
+                    gains, blocked_axes, steps, failed_gains, metrics, max_time, error)
+                reason = 'rule4: equivalent to best; switch axis'
+                if next_gains is None:
+                    next_gains, next_axis, next_factor, skipped = _tuning_unfailed_candidate(
+                        gains, blocked_axes, steps, failed_gains, metrics, max_time, error,
+                        allow_blocked=True)
+                    skipped_failed = skipped_failed or skipped
+                    reason += '; all axes blocked: allow blocked axes'
+                if next_gains is None:
+                    next_gains = best_gains[:]
+                    exhausted = True
+                    reason += '; no unfailed alternative: finish'
             elif not metrics['moved']:
-                # Use the observed error for 100% P output and grow much faster than 2x.
-                next_gains[0] = max(100.0 / max(error, 0.001), gains[0] * 8.0)
-                reason = 'no movement: boost P with 100/|error| and eightfold growth'
-                previous_axis = None
-            elif (previous_gains is not None
-                  and gains[:2] == previous_gains[:2]
-                  and gains[2] > previous_gains[2]
-                  and score > previous_score
-                  and metrics['overshoot_percent'] > previous_overshoot):
-                # A D-only increase made both metrics worse: do not amplify it again.
-                next_gains = best_gains[:]
-                step = max(min_step, 1.0 + (step - 1.0) / 2.0)
-                if previous_gains == best_gains:
-                    if best_gains[2] == 0:
-                        next_gains[2] = gains[2] / step
-                        reason = 'D increase failed: return to best P/I and reduce zero-origin D trial'
-                    else:
-                        next_gains[2] /= step
-                        reason = 'D increase failed: return to best and try decreasing D'
-                    previous_axis, previous_factor = 2, 1.0 / step
-                else:
-                    previous_axis = None
-                    reason = 'D increase failed: return to best measured gains before exploring again'
+                # Bootstrap zero from measured error; grow nonzero P by response severity.
+                next_gains[0] = max(100.0 / max(error, 0.001), gains[0] * steps[0])
+                reason = 'no movement: boost P from measured error and response severity'
+                next_axis, next_factor = 0, steps[0]
             elif metrics['oscillations'] >= 4 or metrics['overshoot_percent'] >= 25:
-                next_gains[0] *= 0.5
-                next_gains[1] *= 0.5
+                step = steps[2]
+                next_gains[0] /= step
+                next_gains[1] /= step
                 next_gains[2] = _tuning_scaled_gain(gains, 2, step, max_time, error)
-                reason = 'large oscillation or overshoot: reduce P and I; increase D'
-                previous_axis = None
-            elif previous_overshoot is not None and metrics['overshoot_percent'] > previous_overshoot:
-                next_gains[2] = _tuning_scaled_gain(gains, 2, step, max_time, error)
-                previous_axis, previous_factor = 2, step
-                reason = 'overshoot increased from previous response: increase D'
-            elif previous_score is not None and score > previous_score and gains != best_gains:
-                next_gains = best_gains[:]
-                step = max(min_step, 1.0 + (step - 1.0) / 2.0)
-                if previous_axis is not None and previous_gains == best_gains:
-                    if best_gains[previous_axis] == 0:
-                        next_gains[previous_axis] = gains[previous_axis] / step
-                        previous_factor = 1.0 / step
-                        reason = 'score worsened: return to best and reduce zero-origin step'
-                    else:
-                        factor = 1.0 / step if previous_factor > 1 else step
-                        next_gains[previous_axis] *= factor
-                        previous_factor = factor
-                        reason = 'score worsened: return to best and try opposite direction with smaller step'
-                else:
-                    previous_axis = None
-                    reason = 'score worsened: return to best measured gains'
+                reason = f'large oscillation or overshoot: reduce P/I, increase D; factor={step:.4f}'
             else:
-                if metrics['overshoot_percent'] > 2.0 or metrics['oscillations'] >= 2:
-                    axis, factor = 2, step
+                direction = 1
+                if previous_overshoot is not None and metrics['overshoot_percent'] > previous_overshoot:
+                    axis = 2
+                    reason = 'overshoot increased from previous response: increase D'
+                elif metrics['overshoot_percent'] > 2.0 or metrics['oscillations'] >= 2:
+                    axis = 2
                     reason = 'overshoot or oscillation: increase D'
-                elif previous_axis is not None and previous_score is not None and score < previous_score:
-                    axis, factor = previous_axis, previous_factor
-                    reason = 'score improved: continue previous direction'
+                elif previous_axis is not None and improved and not first_trial:
+                    axis = previous_axis
+                    direction = 1 if previous_factor > 1 else -1
+                    reason = 'rule4: score improved at least 3% versus best; continue previous direction'
                 elif metrics['steady_state_error'] > 0.01 * abs(reference):
-                    axis, factor = (1 if metrics['settling_time'] is not None else 0), step
+                    axis = 1 if metrics['settling_time'] is not None else 0
                     reason = 'remaining error: increase I if settled, otherwise P'
                 else:
-                    axis, factor = 1, step
+                    axis = 1 if metrics['settling_time'] is not None else 0
                     reason = 'small overshoot: explore I for remaining error'
-                if next_gains[axis] == 0:
-                    reason += '; seed from P or measured error and response duration'
+                    if axis == 0:
+                        reason = 'not settled: explore P before increasing I'
+                step = steps[axis]
+                factor = step if direction > 0 else 1.0 / step
                 next_gains[axis] = _tuning_scaled_gain(next_gains, axis, factor, max_time, error)
-                previous_axis, previous_factor = axis, factor
+                next_axis, next_factor = axis, factor
+                reason += f'; axis={"PID"[axis]}, trial_factor={factor:.4f}'
 
-            next_gains = [min(1e6, max(0.0, value)) for value in next_gains]
+            if not returning_best:
+                next_gains = [min(1e6, max(0.0, value)) for value in next_gains]
+            if failed_trial:
+                reason += '; rule4: score at least 3% worse than best'
+            elif improved:
+                reason += '; rule4: ' + ('first valid best' if first_trial else 'new best by at least 3%')
+            elif repeat_best:
+                reason += f'; rule5: best gains remeasured; mean score={best_score:.5f}'
+            if not stop and not exhausted and _tuning_near_failed(next_gains, failed_gains):
+                if next_retry:
+                    reason += '; rule2: D retry blocked by rule3; return to best baseline'
+                blocked = blocked_axes | ({next_axis} if next_axis is not None else set())
+                candidate, axis, factor, skipped = _tuning_unfailed_candidate(
+                    best_gains, blocked, steps, failed_gains, metrics, max_time, error,
+                    allow_blocked=not equivalent)
+                skipped_failed = skipped_failed or skipped
+                if candidate is None:
+                    next_gains = best_gains[:]
+                    exhausted = True
+                    reason += '; rule3: failed-near PID skipped; no unfailed alternative: finish'
+                else:
+                    next_gains = candidate
+                    seed_base = best_gains
+                    next_axis, next_factor = axis, factor
+                    next_retry = False
+                    reason += (f'; rule3: failed-near PID skipped; alternative from best:'
+                               f' axis={"PID"[axis]}, trial_factor={factor:.4f}')
+            if skipped_failed:
+                reason += '; rule3: failed-near alternative skipped'
+            if not stop and not exhausted:
+                for axis in (1, 2):
+                    if seed_base[axis] == 0 and next_gains[axis] > 0:
+                        reason += f'; rule1: {"PID"[axis]} zero-origin seed without multiplier'
+            previous_comparison = ('first' if improvement is None
+                                   else f'{100.0 * improvement:.2f}%')
+            gap_text = 'first' if best_gap is None else f'{100.0 * best_gap:.2f}%'
+            reason += (f'; improvement_vs_previous={previous_comparison}'
+                       f'; gap_vs_best={gap_text}')
             writer.writerow([len(csv_files), elapsed, *gains, score, a_k, metrics['rise_time'],
                              metrics['overshoot_percent'], metrics['settling_time'],
                              metrics['steady_state_error'], metrics['oscillations'], metrics['moved'],
@@ -236,9 +369,13 @@ def tune():
             print('Next:', next_gains, '-', reason, flush=True)
             if stop:
                 raise SystemExit('No movement twice; tuning stopped for safety.')
+            if exhausted:
+                break
             previous_score = score
             previous_overshoot = metrics['overshoot_percent']
             previous_gains = gains[:]
+            previous_axis, previous_factor = next_axis, next_factor
+            previous_retry = next_retry
             gains = next_gains
 
     if not math.isfinite(best_score):
