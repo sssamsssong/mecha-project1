@@ -1,0 +1,43 @@
+Tuning history: results/tuning_20261121_193013_64485.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 0.0 0.0 0.0
+-> score = 12.01280, A_k = 120.12800
+
+Next: [10.0, 0.0, 0.0] - no movement: boost P from measured error and response severity
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 0.88772, A_k = 8.87717
+
+Next: [19.119999999999997, 0.0, 0.0] - remaining error: increase I if settled, otherwise P; axis=P, trial_factor=1.9120
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.119999999999997 0.0 0.0
+-> score = 0.29499, A_k = 2.94988
+
+Next: [34.14832, 0.0, 0.0] - score improved at least 2%: continue previous direction; axis=P, trial_factor=1.7860
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 34.14832 0.0 0.0
+-> score = 0.32886, A_k = 3.28858
+
+Next: [13.725771715721462, 0.0, 0.0] - score worsened: return to best and try opposite direction with smaller step; axis=P, trial_factor=0.7179
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 13.725771715721462 0.0 0.0
+-> score = 0.55178, A_k = 5.51776
+
+Next: [19.119999999999997, 0.0, 0.0] - score worsened: return to best measured gains
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.119999999999997 0.0 0.0
+-> score = 0.28572, A_k = 2.85722
+
+Next: [19.119999999999997, 15.295999999999998, 0.0] - remaining error: increase I if settled, otherwise P; seed from P or measured error and response duration; axis=I, trial_factor=4.0000
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.119999999999997 15.295999999999998 0.0
+-> score = 0.85419, A_k = 8.54190
+
+Next: [19.119999999999997, 6.118399999999999, 0.0] - score worsened: return to best and reduce zero-origin step; axis=I, trial_factor=0.4000
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.119999999999997 6.118399999999999 0.0
+-> score = 0.77082, A_k = 7.70815
+
+Next: [19.119999999999997, 6.118399999999999, 1.673] - overshoot or oscillation: increase D; seed from P or measured error and response duration; axis=D, trial_factor=1.7500
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.119999999999997 6.118399999999999 1.673
+-> score = 0.68094, A_k = 6.80942
+
+Next: [19.119999999999997, 6.118399999999999, 2.92775] - overshoot or oscillation: increase D; axis=D, trial_factor=1.7500
+Final gains: [19.119999999999997, 0.0, 0.0]
+===== Result =====
+Best gains  : [19.119999999999997, 0.0, 0.0]
+Best score  : 0.28572
+Motor runs  : 9
+Enter the HTML file name: HTML file created: TUNE_20261121_193108.html

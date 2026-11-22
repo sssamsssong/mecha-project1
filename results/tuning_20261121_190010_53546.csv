@@ -1,0 +1,2 @@
+run,elapsed_s,P,I,D,score,A_k,rise_time,overshoot_percent,settling_time,steady_state_error,oscillations,moved,csv,next_P,next_I,next_D,reason
+1,6.173583204001261,10.0,0.0,0.0,0.9180423177999992,9.180423177999993,1.54,0.0,,0.6199999999999991,0,True,20261121_190010_P10_I0_D0.csv,20.0,0.0,0.0,"remaining error: increase I if settled, otherwise P"

@@ -1,0 +1,43 @@
+Tuning history: results/tuning_20261121_193110_64972.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 0.89424, A_k = 8.94240
+
+Next: [19.180600000000002, 0.0, 0.0] - remaining error: increase I if settled, otherwise P; axis=P, trial_factor=1.9181
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 0.0 0.0
+-> score = 0.30300, A_k = 3.02996
+
+Next: [34.2565516, 0.0, 0.0] - score improved at least 2%: continue previous direction; axis=P, trial_factor=1.7860
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 34.2565516 0.0 0.0
+-> score = 0.33157, A_k = 3.31570
+
+Next: [13.769274946159369, 0.0, 0.0] - score worsened: return to best and try opposite direction with smaller step; axis=P, trial_factor=0.7179
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 13.769274946159369 0.0 0.0
+-> score = 0.55332, A_k = 5.53316
+
+Next: [19.180600000000002, 0.0, 0.0] - score worsened: return to best measured gains
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 0.0 0.0
+-> score = 0.29575, A_k = 2.95749
+
+Next: [19.180600000000002, 15.34448, 0.0] - remaining error: increase I if settled, otherwise P; seed from P or measured error and response duration; axis=I, trial_factor=4.0000
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 15.34448 0.0
+-> score = 0.85575, A_k = 8.55748
+
+Next: [19.180600000000002, 6.137792, 0.0] - score worsened: return to best and reduce zero-origin step; axis=I, trial_factor=0.4000
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 6.137792 0.0
+-> score = 0.76879, A_k = 7.68794
+
+Next: [19.180600000000002, 6.137792, 1.6783025] - overshoot or oscillation: increase D; seed from P or measured error and response duration; axis=D, trial_factor=1.7500
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 6.137792 1.6783025
+-> score = 0.68255, A_k = 6.82550
+
+Next: [19.180600000000002, 6.137792, 2.937029375] - overshoot or oscillation: increase D; axis=D, trial_factor=1.7500
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 19.180600000000002 6.137792 2.937029375
+-> score = 0.72469, A_k = 7.24690
+
+Next: [19.180600000000002, 0.0, 0.0] - score worsened: return to best measured gains
+Final gains: [19.180600000000002, 0.0, 0.0]
+===== Result =====
+Best gains  : [19.180600000000002, 0.0, 0.0]
+Best score  : 0.29575
+Motor runs  : 9
+Enter the HTML file name: HTML file created: TUNE_20261121_193205.html

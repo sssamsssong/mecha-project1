@@ -1,0 +1,43 @@
+Tuning history: results/tuning_20261121_194434_68803.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 500.0 50.0
+-> score = 0.14734, A_k = 1.47337
+
+Next: [1000.0, 625.0, 50.0] - small overshoot: explore I for remaining error; axis=I, trial_factor=1.2500; improvement_vs_previous=first; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 625.0 50.0
+-> score = 0.14823, A_k = 1.48234
+
+Next: [1000.0, 400.0, 50.0] - score worsened: return to best and try opposite direction with smaller step; axis=I, trial_factor=0.8000; improvement_vs_previous=-0.61%; gap_vs_best=0.61%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 400.0 50.0
+-> score = 0.14970, A_k = 1.49704
+
+Next: [1000.0, 500.0, 50.0] - score worsened: return to best measured gains; improvement_vs_previous=-0.99%; gap_vs_best=1.61%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 500.0 50.0
+-> score = 0.14586, A_k = 1.45860
+
+Next: [1000.0, 625.0, 50.0] - small overshoot: explore I for remaining error; axis=I, trial_factor=1.2500; improvement_vs_previous=2.57%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 625.0 50.0
+-> score = 0.14286, A_k = 1.42863
+
+Next: [1000.0, 625.0, 62.5] - overshoot increased from previous response: increase D; axis=D, trial_factor=1.2500; improvement_vs_previous=2.05%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 625.0 62.5
+-> score = 0.19301, A_k = 1.93008
+
+Next: [1000.0, 625.0, 40.0] - score worsened: return to best and try opposite direction with smaller step; axis=D, trial_factor=0.8000; improvement_vs_previous=-35.10%; gap_vs_best=35.10%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 625.0 40.0
+-> score = 0.14168, A_k = 1.41683
+
+Next: [1000.0, 625.0, 32.0] - score improved at least 2%: continue previous direction; axis=D, trial_factor=0.8000; improvement_vs_previous=26.59%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 625.0 32.0
+-> score = 0.14085, A_k = 1.40846
+
+Next: [1000.0, 781.25, 32.0] - improvement below 2%: switch axis with a reduced response-based step; axis=I, trial_factor=1.2500; improvement_vs_previous=0.59%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 1000.0 781.25 32.0
+-> score = 0.14307, A_k = 1.43066
+
+Next: [1000.0, 500.0, 32.0] - score worsened: return to best and try opposite direction with smaller step; axis=I, trial_factor=0.8000; improvement_vs_previous=-1.58%; gap_vs_best=1.58%
+Final gains: [1000.0, 625.0, 32.0]
+===== Result =====
+Best gains  : [1000.0, 625.0, 32.0]
+Best score  : 0.14085
+Motor runs  : 9
+Enter the HTML file name: HTML file created: TUNE_20261121_194530.html

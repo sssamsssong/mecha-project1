@@ -1,0 +1,43 @@
+Tuning history: results/tuning_20261121_195819_73365.csv
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 10.0 0.0 0.0
+-> score = 0.94904, A_k = 9.49044
+
+Next: [106.1, 0.0, 0.0] - remaining error: increase I if settled, otherwise P; axis=P, trial_factor=10.6100; improvement_vs_previous=first; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 106.1 0.0 0.0
+-> score = 0.19235, A_k = 1.92355
+
+Next: [106.1, 0.0, 9.28375] - overshoot increased from previous response: increase D; seed from P or measured error and response duration; axis=D, trial_factor=1.7500; improvement_vs_previous=79.73%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 106.1 0.0 9.28375
+-> score = 0.21563, A_k = 2.15627
+
+Next: [106.1, 0.0, 6.751818181818181] - score worsened: return to best and reduce zero-origin step; axis=D, trial_factor=0.7273; remember failed PID: score worse than best; improvement_vs_previous=-12.10%; gap_vs_best=12.10%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 106.1 0.0 6.751818181818181
+-> score = 0.20234, A_k = 2.02343
+
+Next: [106.1, 0.0, 0.0] - still over 2% worse than best after retry: return to best measured gains; remember failed PID: score worse than best; improvement_vs_previous=6.16%; gap_vs_best=5.19%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 106.1 0.0 0.0
+-> score = 0.18773, A_k = 1.87725
+
+Next: [921.7967999999998, 0.0, 0.0] - overshoot increased from previous response: increase D; seed from P or measured error and response duration; axis=D, trial_factor=1.7500; failed PID skipped; alternative from best: axis=P, trial_factor=8.6880; improvement_vs_previous=7.22%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 921.7967999999998 0.0 0.0
+-> score = 0.13760, A_k = 1.37601
+
+Next: [8008.570598399998, 0.0, 0.0] - score improved at least 2%: continue previous direction; axis=P, trial_factor=8.6880; improvement_vs_previous=26.70%; gap_vs_best=0.00%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 8008.570598399998 0.0 0.0
+-> score = 0.18223, A_k = 1.82228
+
+Next: [190.29661436829065, 0.0, 0.0] - score worsened: return to best and try opposite direction with smaller step; axis=P, trial_factor=0.2064; remember failed PID: score worse than best; improvement_vs_previous=-32.43%; gap_vs_best=32.43%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 190.29661436829065 0.0 0.0
+-> score = 0.15337, A_k = 1.53371
+
+Next: [921.7967999999998, 0.0, 0.0] - still over 2% worse than best after retry: return to best measured gains; remember failed PID: score worse than best; improvement_vs_previous=15.84%; gap_vs_best=11.46%
+Run: sudo ./AUTO_CONTROL_PROJ 10.0 5 216 921.7967999999998 0.0 0.0
+-> score = 0.13683, A_k = 1.36825
+
+Next: [921.7967999999998, 230.44919999999996, 0.0] - small overshoot: explore I for remaining error; seed from P or measured error and response duration; axis=I, trial_factor=1.2500; improvement_vs_previous=10.79%; gap_vs_best=0.00%
+Final gains: [921.7967999999998, 0.0, 0.0]
+===== Result =====
+Best gains  : [921.7967999999998, 0.0, 0.0]
+Best score  : 0.13683
+Motor runs  : 9
+Enter the HTML file name: HTML file created: TUNE_20261121_195915.html
